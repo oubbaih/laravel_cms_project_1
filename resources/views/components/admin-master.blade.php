@@ -17,6 +17,8 @@
   <!-- Custom styles for this template-->
   <link href="{{asset('css/app.css')}}" rel="stylesheet">
   <link href="{{asset('css/sb-admin-2.min.css')}}" rel="stylesheet">
+  {{-- css Links Of SummernoteJs  --}}
+  @yield('cssSummernote')
 </head>
 
 <body id="page-top">
@@ -55,6 +57,10 @@
 
   @yield('scripts')
 
+
+
+  {{-- JS Links Of SummernoteJs  --}}
+  @yield('jsSummernote');
 </body>
 
 </html>

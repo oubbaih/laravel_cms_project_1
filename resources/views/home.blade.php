@@ -1,4 +1,4 @@
-<x-home-master>
+<x-home-master :categories=$categories>
   @section('content')
 
   <!-- Nested row for non-featured blog posts-->
@@ -13,7 +13,7 @@
         <div class="card-body">
           <div class="small text-muted">{{$post->created_at->diffForHumans()}}</div>
           <h2 class="card-title h4">{{$post->title}}</h2>
-          <p class="card-text">{{$post->body}}</p>
+          <p class="card-text">{!! $post->body !!}</p>
           <a class="btn btn-primary" href="{{ route('post',$post->id) }}">Read more →</a>
         </div>
       </div>

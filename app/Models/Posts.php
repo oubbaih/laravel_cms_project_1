@@ -24,7 +24,7 @@ class Posts extends Model
     {
         return asset($value);
     }
-    public function categories()
+    public function category()
     {
         return $this->belongsTo(Category::class);
     }

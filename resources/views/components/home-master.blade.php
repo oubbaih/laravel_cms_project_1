@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" >
 
 <head>
   <meta charset="utf-8" />
@@ -11,6 +11,8 @@
   <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
   <!-- Core theme CSS (includes Bootstrap)-->
   <link href="{{asset('css/app.css')}}" rel="stylesheet" />
+
+
 </head>
 
 <body>
@@ -46,25 +48,22 @@
         </div>
         <!-- Categories widget-->
         <div class="card mb-4">
+         
           <div class="card-header">Categories</div>
+           @if(isset($categories))
           <div class="card-body">
             <div class="row">
+              @foreach($categories as $category)
               <div class="col-sm-6">
                 <ul class="list-unstyled mb-0">
-                  <li><a href="#!">Web Design</a></li>
-                  <li><a href="#!">HTML</a></li>
-                  <li><a href="#!">Freebies</a></li>
+                  <li><a href="#!">{{$category->name}}</a></li>
                 </ul>
               </div>
-              <div class="col-sm-6">
-                <ul class="list-unstyled mb-0">
-                  <li><a href="#!">JavaScript</a></li>
-                  <li><a href="#!">CSS</a></li>
-                  <li><a href="#!">Tutorials</a></li>
-                </ul>
-              </div>
+           
+              @endforeach
             </div>
           </div>
+          @endif
         </div>
         <!-- Side widget-->
         <div class="card mb-4">
@@ -84,6 +83,7 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
   <!-- Core theme JS-->
   <script src="{{asset('js/scripts.js')}}"></script>
+
 </body>
 
 </html>

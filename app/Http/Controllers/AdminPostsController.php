@@ -5,8 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\Category;
 use App\Models\Posts;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
+
 use Illuminate\Support\Facades\Session;
+
 
 class AdminPostsController extends Controller
 {
@@ -24,8 +25,7 @@ class AdminPostsController extends Controller
     {
         //Here We Will Explain How To Mke pagination 
         //
-
-        $posts = auth()->user()->posts()->paginate(4);
+        $posts = Posts::paginate(5);
         return view('admin.posts.index', ['posts' => $posts]);
     }
 
@@ -37,7 +37,7 @@ class AdminPostsController extends Controller
     public function create()
     {
         //
-        $categories = Category::all();
+        $categories = Category::get();
         return view('admin.posts.create', ['categories' => $categories]);
     }
 
@@ -49,25 +49,57 @@ class AdminPostsController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        // dd($request);
 
-
-        $input = $request->validate([
+        $request->validate([
             'title' => 'required',
-            'post_image' => 'file',
             'body' => 'required',
+            'post_image' => 'file',
             'category_id' => 'required'
         ]);
 
+
+        $input = [];
         if ($request->post_image) {
             $fileName = $request->file('post_image')->getClientOriginalName();
             $path = $request->file('post_image')->storeAs('images', $fileName, 'public');
-            $input['post_image'] = '/storage/' . $path;
+            $input['post_image'] =  '/storage/' . $path;
         }
-        // dd($input['post_image']);
+
+        $input['title'] = $request['title'];
+        $input['category_id'] = $request['category_id'];
+
+
+        $content = $request->body;
+        $dom = new \DomDocument();
+        $dom->loadHtml($content, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
+        $imageFile = $dom->getElementsByTagName('img');
+
+        foreach ($imageFile as $item => $image) {
+            $data = $image->getAttribute('src');
+            list($type, $data) = explode(';', $data);
+            list(, $data)      = explode(',', $data);
+            $imgeData = base64_decode($data);
+            $image_name = "/uploads/" . time() . $item . '.png';
+            $path = public_path() . $image_name;
+            file_put_contents($path, $imgeData);
+
+            $image->removeAttribute('src');
+            $image->setAttribute('src', $image_name);
+        }
+
+        $content = $dom->saveHTML();
+
+
+
+        $input['body'] = $content;
+
+
         auth()->user()->posts()->create($input);
 
+
         Session::flash('post-created', 'Post Is Created');
+
         return redirect(route('posts.index'));
     }
 
@@ -92,6 +124,7 @@ class AdminPostsController extends Controller
     {
         $categories = Category::all();
         $post = Posts::find($id);
+        // dd($post);
         return view('admin.posts.edit', ['post' => $post, 'categories' => $categories]);
     }
 
@@ -105,21 +138,48 @@ class AdminPostsController extends Controller
     public function update(Request $request, Posts $post)
     {
         //
-        $input = $request->validate([
+        $request->validate([
             'title' => 'required',
-            'post_image' => 'file',
             'body' => 'required',
-            'category_id' => 'required'
+            'category_id' => 'required',
+            'post_image' => 'file'
         ]);
+
 
 
         if ($request->post_image) {
             $fileName = $request->file('post_image')->getClientOriginalName();
             $path = $request->file('post_image')->storeAs('images', $fileName, 'public');
-            $input['post_image'] = '/storage/' . $path;
-            $post->post_image = $input['post_image'];
+            $post->post_image = '/storage/' . $path;;
         }
-        $post->update($input);
+        $post->title = $request->title;
+        $post->category_id = $request->category_id;
+
+
+        $content = $request->body;
+
+
+        $dom = new \DomDocument();
+        $dom->loadHtml($content, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
+        $imageFile = $dom->getElementsByTagName('img');
+        // dd($imageFile);
+
+
+        foreach ($imageFile as $item => $image) {
+            $data = $image->getAttribute('src');
+
+            // list($type, $data) = explode(';', $data);
+            // list(, $data)      = explode(',', $data);
+            $imgeData = base64_decode($data);
+            $image_name = "/uploads/" . time() . $item . '.png';
+            $path = public_path() . $image_name;;
+            $image->removeAttribute('src');
+            $image->setAttribute('src', file_put_contents($path, $imgeData));
+        }
+
+        $post->body = $dom->saveHTML();
+
+        $post->save();
         Session::flash('update-message', 'Post Is Updated');
         return redirect(route('posts.index'));
     }
@@ -134,7 +194,6 @@ class AdminPostsController extends Controller
     {
         //
         $post = Posts::findOrFail($id);
-        $this->authorize('delete', $post);
         $post->delete();
         Session::flash('delete-message', 'Post Was Deleted');
         return redirect(route('posts.index'));

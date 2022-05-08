@@ -37,7 +37,7 @@ Route::middleware('auth')->group(function () {
   Route::resource('/admin/profile', AdminProfileController::class);
 });
 
-Route::middleware('role:[admin,view-dashboard]', 'auth')->group(function () {
+Route::middleware('role:admin', 'auth')->group(function () {
   Route::resource('/admin/user', UserController::class);
   Route::put('/admin/{role}/rolesattach', UserRolesAttach::class . '@attach')->name('rolesattach.attach');
   Route::delete('/admin/{role}/rolesdetach', UserRolesAttach::class . '@detach')->name('rolesdetach.detach');

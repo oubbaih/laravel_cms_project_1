@@ -52,7 +52,7 @@
                             <td>{{$post->id}}</td>
                             <td>{{$post->user->name}}</td>
                             <td>{{$post->title}}</td>
-                            <td>{{$post->categories ? $post->categories->name : "UnCategorized"}}</td>
+                            <td>{{$post->category->name}}</td>
                             <td><img width="100px" src="{{$post->post_image}}" alt=""></td>
                             <td>{{$post->created_at->diffForHumans()}}</td>
                             <td>{{$post->updated_at->diffForHumans()}}</td>

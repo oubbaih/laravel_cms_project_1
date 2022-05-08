@@ -1,4 +1,4 @@
-<x-home-master>
+<x-home-master :categories=$categories>
 
     @section('content')
 
@@ -26,7 +26,7 @@
     <hr>
 
     <!-- Post Content -->
-    <p>{{Str::limit($post->body , 50 , '......')}}</p>
+    <p>{!!  $post->body  !!}</p>
     @else
     <p>No Post Exist</p>
     @endif

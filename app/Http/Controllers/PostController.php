@@ -19,6 +19,7 @@ class PostController extends Controller
         //
 
         $post  =  Posts::findOrFail($id);
-        return view('blog-post', ['post' => $post]);
+        $categories = Category::all();
+        return view('blog-post', ['post' => $post, 'categories' => $categories]);
     }
 }
