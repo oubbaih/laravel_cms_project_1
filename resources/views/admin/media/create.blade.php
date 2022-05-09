@@ -1,29 +1,84 @@
 <x-admin-master>
 @section('styles')
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/dropzone/6.0.0-beta.2/dropzone.css" integrity="sha512-b3Wb3Os4sxJRdYkfCWtFjvuN/OlfBNtBGJknON+zbxU6M7GRYdII8m1W7TMsls/kwuwtq1wt7TvuF58Sd/4AGg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+<script src="https://unpkg.com/dropzone@6.0.0-beta.1/dist/dropzone-min.js"></script>
+<link href="https://unpkg.com/dropzone@6.0.0-beta.1/dist/dropzone.css" rel="stylesheet" type="text/css" />
+
 @endsection
 @section('content')
-<h1>Create Media</h1>
+<h1>Upload Images</h1>
 
-<form action="{{route('media.store')}}"  method="post" 
-      class="dropzone"
-      
-      id="my-awesome-dropzone">
-    <input type="file" name="file" /></form>
+            <form action="{{ route('media.store') }}" method="post" enctype="multipart/form-data" id="image-upload" class="dropzone">
+
+                @csrf
+
+                <div class="text-center">
+
+                    <h4>Upload Multiple Image By Click On Box</h4>
+
+                </div>
+
+            </form>
 @endsection
-{{-- 
-<form action="{{route('media.store')}}"class="dropzone">
-{{-- @csrf
-@method('POST') --}}
 
-</form> --}}
 
 
 
 
 
 @section('scripts')
-<script src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/6.0.0-beta.2/dropzone.js" integrity="sha512-Sz+viN3paoBmB6Ptj2PalCpQC968OhwAwP4xHPvZ4bKP6wrVOZqX2JRrxBVHDD+KKN9rcdShRoOfSsCTnmzq7g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+<script type="text/javascript">
+
+  
+
+        Dropzone.autoDiscover = false;
+
+  
+
+        var dropzone = new Dropzone('#image-upload', {
+
+              thumbnailWidth: 200,
+              addRemoveLinks: true,
+              timeout: 50000,
+              maxFilesize: 1,
+              acceptedFiles: ".jpeg,.jpg,.png,.gif",
+              renameFile: function(file) {
+                var dt = new Date();
+                var time = dt.getTime();
+               return time+file.name;
+              },
+              removedfile: function(file){
+                var name = file.upload.filename;
+                $.ajax({
+                    headers: {
+                                'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
+                            },
+                    type: 'POST',
+                    url: '{{ url("meida/destroy") }}',
+                    data: {filename: name},
+                    success: function (data){
+                        console.log("File has been successfully removed!!");
+                    },
+                    error: function(e) {
+                        console.log(e);
+                    }});
+                    var fileRef;
+                    return (fileRef = file.previewElement) != null ? 
+                    fileRef.parentNode.removeChild(file.previewElement) : void 0;
+              },
+              success: function(file, response){
+                console.log(response);
+              },
+              error: function(file, response){
+               return false;
+              }
+       
+
+            });
+
+  
+
+</script>
 @endsection
 
 

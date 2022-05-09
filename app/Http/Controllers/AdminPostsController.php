@@ -150,7 +150,7 @@ class AdminPostsController extends Controller
         if ($request->post_image) {
             $fileName = $request->file('post_image')->getClientOriginalName();
             $path = $request->file('post_image')->storeAs('images', $fileName, 'public');
-            $post->post_image = '/storage/' . $path;;
+            $post->post_image = '/storage/' . $path;
         }
         $post->title = $request->title;
         $post->category_id = $request->category_id;

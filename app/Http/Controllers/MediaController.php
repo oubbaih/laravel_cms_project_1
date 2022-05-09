@@ -15,7 +15,8 @@ class MediaController extends Controller
     public function index()
     {
         //
-        return view('admin.media.index');
+        $images = Media::paginate(10);
+        return view('admin.media.index', compact('images'));
     }
 
     /**
@@ -38,7 +39,14 @@ class MediaController extends Controller
     public function store(Request $request)
     {
         //
-        dd($request);
+        $image = $request->file('file');
+        $imageName = $image->getClientOriginalName();
+        $image->move(public_path('images'), $imageName);
+
+        $imageUpload = new Media();
+        $imageUpload->filename = 'images/' . $imageName;
+        $imageUpload->save();
+        return redirect(route('media.index'));
     }
 
     /**
@@ -81,8 +89,23 @@ class MediaController extends Controller
      * @param  \App\Models\Media  $media
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Media $media)
+    public function destroy(Request $request, $id)
     {
         //
+
+        if ($id) {
+            $image = Media::find($id);
+            $path = $image->filename;
+            unlink($path);
+            $image->delete();
+        } else {
+            $filename =  $request->get('filename');
+            Media::where('filename', $filename)->delete();
+            $path = public_path() . '/images/' . $filename;
+            if (file_exists($path)) {
+                unlink($path);
+            }
+        }
+        return redirect(route('media.index'));
     }
 }
