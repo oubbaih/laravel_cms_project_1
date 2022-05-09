@@ -19,6 +19,7 @@
   <link href="{{asset('css/sb-admin-2.css')}}" rel="stylesheet">
   {{-- css Links Of SummernoteJs  --}}
   @yield('cssSummernote')
+  @yield('styles')
 </head>
 
 <body id="page-top">

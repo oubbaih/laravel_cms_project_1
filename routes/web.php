@@ -5,6 +5,7 @@ use App\Http\Controllers\AdminPostsController;
 use App\Http\Controllers\AdminProfileController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\MediaController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\RoleController;
@@ -48,4 +49,6 @@ Route::middleware('role:admin', 'auth')->group(function () {
   Route::resource('admin/permissions', PermissionController::class);
   // Categories Route 
   Route::resource('/admin/category', CategoryController::class);
+  //Media Routes 
+  Route::resource('/admin/media', MediaController::class);
 });
