@@ -50,5 +50,7 @@ Route::middleware('role:admin', 'auth')->group(function () {
   // Categories Route 
   Route::resource('/admin/category', CategoryController::class);
   //Media Routes 
+  // Add MediaCheckbox Route 
+  Route::post('/admin/checkbox', MediaController::class . '@mediaCheckbox')->name('admin.checkbox');
   Route::resource('/admin/media', MediaController::class);
 });

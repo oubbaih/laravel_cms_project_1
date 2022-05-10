@@ -11,7 +11,7 @@
       <label for="FormControlTitleInput" class="form-label">Title</label>
       <input type="text" name="title" value="{{$post->title}}" class="form-control" id="FormControlTitleInput">
     </div>
-    <div class="mb-3"><img class="img-fluid " src="{{$post->post_image}}" alt="{{$post->title}}"></div>
+    <div class="mb-3"><img class="img-fluid " src="{{$image->filename}}" alt="{{$post->title}}"></div>
     <div class="mb-3">
       <label for="formImageFile" class="form-label">Post Image</label>
       <input class="form-control form-control-sm" name="post_image" id="formImageFile" type="file">
@@ -25,7 +25,7 @@
       @if($post->category->name ===$cat->name ) 
       <option value="{{$post->category->id}}" selected >{{$post->category->name}}</option>
       @else
-      <option value="{{$cat->id}}" >{{$cat->name}}</option>
+      <option value="{{$cat->id}}">{{$cat->name}}</option>
       @endif
      @endforeach
     </select>

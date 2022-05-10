@@ -24,7 +24,7 @@
                             <th>Owner</th>
                             <th>Title</th>
                             <th>Category Name</th>
-                            <th>Image</th>
+                            <th>Media Id</th>
                             <th>Created At</th>
                             <th>Updated At</th>
                             <th>Edit</th>
@@ -38,7 +38,7 @@
                             <th>Owner</th>
                             <th>Title</th>
                             <th>Category Name</th>
-                            <th>Image</th>
+                            <th>Media Id</th>
                             <th>Created At</th>
                             <th>Updated At</th>
                             <th>Edit</th>
@@ -53,12 +53,13 @@
                             <td>{{$post->user->name}}</td>
                             <td>{{$post->title}}</td>
                             <td>{{$post->category->name}}</td>
-                            <td><img width="100px" src="{{$post->post_image}}" alt=""></td>
+                            {{-- <td><img width="100px" src="{{asset($post->post_image)}}" alt=""></td> --}}
+                            <td>{{$post->media_id}}</td>
                             <td>{{$post->created_at->diffForHumans()}}</td>
                             <td>{{$post->updated_at->diffForHumans()}}</td>
                             <td><a href="{{route('posts.edit',$post)}}" class="btn btn-primary">Edit</a></td>
                             <td>
-                                <form method="post" action="{{route('posts.destroy', $post->id)}}" enctype="multipart/form-data">
+                                <form method="post" action="{{route('posts.destroy', $post)}}" enctype="multipart/form-data">
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit" class="btn btn-danger">Delete</button>

@@ -3,11 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Models\Category;
+use App\Models\Media;
 use App\Models\Posts;
 use Illuminate\Http\Request;
 
 use Illuminate\Support\Facades\Session;
-
+use Symfony\Component\Console\Input\Input;
 
 class AdminPostsController extends Controller
 {
@@ -26,6 +27,7 @@ class AdminPostsController extends Controller
         //Here We Will Explain How To Mke pagination 
         //
         $posts = Posts::paginate(5);
+        // dd($posts);
         return view('admin.posts.index', ['posts' => $posts]);
     }
 
@@ -63,8 +65,12 @@ class AdminPostsController extends Controller
         if ($request->post_image) {
             $fileName = $request->file('post_image')->getClientOriginalName();
             $path = $request->file('post_image')->storeAs('images', $fileName, 'public');
-            $input['post_image'] =  '/storage/' . $path;
+            $res = Media::create(['filename' => '/storage/' . $path]);
+            if ($res) {
+                $input['media_id'] = $res->id;
+            }
         }
+
 
         $input['title'] = $request['title'];
         $input['category_id'] = $request['category_id'];
@@ -80,7 +86,7 @@ class AdminPostsController extends Controller
             list($type, $data) = explode(';', $data);
             list(, $data)      = explode(',', $data);
             $imgeData = base64_decode($data);
-            $image_name = "/uploads/" . time() . $item . '.png';
+            $image_name = "/storage/images/" . time() . $item . '.png';
             $path = public_path() . $image_name;
             file_put_contents($path, $imgeData);
 
@@ -94,7 +100,7 @@ class AdminPostsController extends Controller
 
         $input['body'] = $content;
 
-
+        // dd($input);
         auth()->user()->posts()->create($input);
 
 
@@ -124,8 +130,9 @@ class AdminPostsController extends Controller
     {
         $categories = Category::all();
         $post = Posts::find($id);
-        // dd($post);
-        return view('admin.posts.edit', ['post' => $post, 'categories' => $categories]);
+        $image = Media::findOrFail($post->id);
+        // dd($image);
+        return view('admin.posts.edit', ['post' => $post, 'categories' => $categories, 'image' => $image]);
     }
 
     /**
@@ -150,34 +157,38 @@ class AdminPostsController extends Controller
         if ($request->post_image) {
             $fileName = $request->file('post_image')->getClientOriginalName();
             $path = $request->file('post_image')->storeAs('images', $fileName, 'public');
-            $post->post_image = '/storage/' . $path;
+            $res = Media::create(['filename' => '/storage/' . $path]);
+            if ($res) {
+                $post->media_id = $res->id;
+            }
         }
         $post->title = $request->title;
         $post->category_id = $request->category_id;
 
 
+
         $content = $request->body;
-
-
         $dom = new \DomDocument();
-        $dom->loadHtml($content, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
-        $imageFile = $dom->getElementsByTagName('img');
-        // dd($imageFile);
+        libxml_use_internal_errors(true);
+        $dom->loadHtml($content);
 
+        $imageFile = $dom->getElementsByTagName('img');
 
         foreach ($imageFile as $item => $image) {
             $data = $image->getAttribute('src');
-
             // list($type, $data) = explode(';', $data);
             // list(, $data)      = explode(',', $data);
             $imgeData = base64_decode($data);
-            $image_name = "/uploads/" . time() . $item . '.png';
-            $path = public_path() . $image_name;;
+            $image_name = "/storage/images/" . time() . $item . '.png';
+            $path = public_path() . $image_name;
+            file_put_contents($path, $imgeData);
+
             $image->removeAttribute('src');
-            $image->setAttribute('src', file_put_contents($path, $imgeData));
+            $image->setAttribute('src', $image_name);
         }
 
-        $post->body = $dom->saveHTML();
+        $content = $dom->saveHTML();
+
 
         $post->save();
         Session::flash('update-message', 'Post Is Updated');

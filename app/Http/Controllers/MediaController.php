@@ -3,10 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Models\Media;
+use App\Models\Posts;
 use Illuminate\Http\Request;
 
 class MediaController extends Controller
 {
+
     /**
      * Display a listing of the resource.
      *
@@ -41,10 +43,10 @@ class MediaController extends Controller
         //
         $image = $request->file('file');
         $imageName = $image->getClientOriginalName();
-        $image->move(public_path('images'), $imageName);
+        $image->move(public_path('storage/images/'), $imageName);
 
         $imageUpload = new Media();
-        $imageUpload->filename = 'images/' . $imageName;
+        $imageUpload->filename = 'storage/images/' . $imageName;
         $imageUpload->save();
         return redirect(route('media.index'));
     }
@@ -92,16 +94,16 @@ class MediaController extends Controller
     public function destroy(Request $request, $id)
     {
         //
-
-        if ($id) {
-            $image = Media::find($id);
-            $path = $image->filename;
+        $image = Media::find($id);
+        if ($image) {
+            $path = public_path() . $image->filename;
             unlink($path);
             $image->delete();
+            // $post->media_id = null;
         } else {
             $filename =  $request->get('filename');
             Media::where('filename', $filename)->delete();
-            $path = public_path() . '/images/' . $filename;
+            $path = public_path() . 'storage/images/' . $filename;
             if (file_exists($path)) {
                 unlink($path);
             }
