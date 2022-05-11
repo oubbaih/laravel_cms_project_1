@@ -32,4 +32,8 @@ class Posts extends Model
     {
         return $this->belongsTo(Media::class);
     }
+    public function comments()
+    {
+        return $this->hasMany(Comment::class);
+    }
 }
