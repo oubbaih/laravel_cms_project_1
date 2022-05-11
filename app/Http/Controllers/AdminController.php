@@ -2,6 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Category;
+use App\Models\Comment;
+use App\Models\Media;
+use App\Models\Permission;
+use App\Models\Posts;
 use App\Models\Role;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -17,8 +22,13 @@ class AdminController extends Controller
 
     public function index()
     {
-        $user = Auth::user();
-
-        return  view('admin.index', ['user' => $user]);
+        $userCount = User::count();
+        $postsCount = Posts::count();
+        $categoriesCount = Category::count();
+        $permissionsCount = Permission::count();
+        $rolesCount = Role::count();
+        $mediaCount = Media::count();
+        $commentCount = Comment::count();
+        return  view('admin.index', compact('userCount', 'postsCount', 'categoriesCount', 'permissionsCount', 'rolesCount', 'mediaCount', 'commentCount'));
     }
 }
