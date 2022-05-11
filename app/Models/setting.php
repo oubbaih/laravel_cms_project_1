@@ -7,6 +7,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class setting extends Model
 {
-    protected $fillable = ['title', 'subtitle', 'logo', 'footer_copy_right'];
+    protected $fillable = ['title', 'subtitle', 'media_id', 'footer_copy_right'];
     use HasFactory;
+    public function media()
+    {
+        return $this->belongsTo(Media::class);
+    }
 }

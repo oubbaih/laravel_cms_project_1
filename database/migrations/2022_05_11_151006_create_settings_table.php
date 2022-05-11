@@ -15,9 +15,9 @@ return new class extends Migration
     {
         Schema::create('settings', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('media_id');
             $table->string('title');
             $table->string('subtitle');
-            $table->text('logo');
             $table->string('footer_copy_right');
             $table->timestamps();
         });

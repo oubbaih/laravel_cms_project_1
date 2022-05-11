@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Media;
 use App\Models\setting;
 use Illuminate\Http\Request;
 
@@ -15,6 +16,9 @@ class SettingController extends Controller
     public function index()
     {
         //
+        $settings = setting::all();
+        // dd($settings);
+        return view('admin.settings.index',  compact('settings'));
     }
 
     /**
@@ -25,6 +29,7 @@ class SettingController extends Controller
     public function create()
     {
         //
+        return view('admin.settings.create');
     }
 
     /**
@@ -35,7 +40,29 @@ class SettingController extends Controller
      */
     public function store(Request $request)
     {
+        $setting = new setting();
         //
+        $request->validate([
+            'title' => 'required',
+            'subtitle' => 'required',
+            'logo' => 'file',
+            'footer_copy_right' => 'required',
+        ]);
+        if ($request->logo) {
+            $fileName = $request->file('logo')->getClientOriginalName();
+            $path = $request->file('logo')->storeAs('images', $fileName, 'public');
+            $res = Media::create(['filename' => '/storage/' . $path]);
+            if ($res) {
+                $setting->media_id = $res->id;
+            }
+        }
+
+
+        $setting->title = $request->title;
+        $setting->subtitle = $request->subtitle;
+        $setting->footer_copy_right = $request->footer_copy_right;
+        $setting->save();
+        return redirect(route('setting.index'));
     }
 
     /**
@@ -58,6 +85,9 @@ class SettingController extends Controller
     public function edit(setting $setting)
     {
         //
+        $setting = setting::findOrFail($setting->id);
+
+        return view('admin.settings.edit', compact('setting'));
     }
 
     /**
@@ -70,6 +100,28 @@ class SettingController extends Controller
     public function update(Request $request, setting $setting)
     {
         //
+        //
+        $request->validate([
+            'title' => 'required',
+            'subtitle' => 'required',
+            'logo' => 'file',
+            'footer_copy_right' => 'required',
+        ]);
+        if ($request->logo) {
+            $fileName = $request->file('logo')->getClientOriginalName();
+            $path = $request->file('logo')->storeAs('images', $fileName, 'public');
+            $res = Media::create(['filename' => '/storage/' . $path]);
+            if ($res) {
+                $setting->media_id = $res->id;
+            }
+        }
+
+
+        $setting->title = $request->title;
+        $setting->subtitle = $request->subtitle;
+        $setting->footer_copy_right = $request->footer_copy_right;
+        $setting->save();
+        return redirect(route('setting.index'));
     }
 
     /**
