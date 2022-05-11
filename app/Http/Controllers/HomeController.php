@@ -18,10 +18,10 @@ class HomeController extends Controller
     public function index()
     {
         $posts = Posts::with('media')->paginate(4);
-        $setting = setting::all();
+        $settings = setting::all();
         // dd($setting);
         $categories = Category::all();
-        return view('home', compact('posts', 'categories', 'setting'));
+        return view('home', compact('posts', 'categories', 'settings'));
     }
     public function search(Request $request)
     {

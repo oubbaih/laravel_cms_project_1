@@ -2,7 +2,7 @@
   @section('content')
   @if(auth()->user()->userHasRole('admin'))
   <h1 class="h3 mb-4 text-grey-800">Dashbord</h1>
-  <div class="chart-container" style="position: relative; height:40vh; width:80vw">
+  <div class="chart-container" style="position: relative; height:20vh; width:80vw">
     <canvas id="myChart"></canvas>
 </div>
   @endif

@@ -1,4 +1,13 @@
-<x-home-master :categories=$categories :settings=$setting>
+<x-home-master>
+@section('setting')
+ <div class="text-center my-5">
+        @foreach ($settings as $setting)
+        <h1 class="fw-bolder">{{$setting->title}}</h1>
+        <p class="lead mb-0">{{$setting->subtitle}}</p>
+        @endforeach
+      </div>
+@endsection
+
   @section('content')
 
   <!-- Nested row for non-featured blog posts-->
@@ -32,6 +41,10 @@
   @endif
 
   @endsection
-
+@section('copyright')
+     @foreach($settings as $setting)
+             <p class="m-0 text-center text-white">{{$setting->footer_copy_right}}</p>
+        @endforeach
+@endsection
 
 </x-home-master>

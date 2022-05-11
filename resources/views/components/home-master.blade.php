@@ -21,12 +21,7 @@
   
   <header class="py-5 bg-light border-bottom mb-4">
     <div class="container">
-      <div class="text-center my-5">
-        @foreach ($settings as $setting)
-        <h1 class="fw-bolder">{{$setting->title}}</h1>
-        <p class="lead mb-0">{{$setting->subtitle}}</p>
-        @endforeach
-      </div>
+     @yield('setting')
     </div>
   </header>
   <!-- Page content-->

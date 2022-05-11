@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Category;
 use App\Models\Posts;
+use App\Models\setting;
 use Illuminate\Http\Request;
 
 class PostController extends Controller
@@ -20,7 +21,7 @@ class PostController extends Controller
 
         $post  =  Posts::with(['media', 'comments'])->findOrFail($id);
         $categories = Category::all();
-
-        return view('blog-post', ['post' => $post, 'categories' => $categories]);
+        $settings = setting::all();
+        return view('blog-post', ['post' => $post, 'categories' => $categories, 'settings' => $settings]);
     }
 }
