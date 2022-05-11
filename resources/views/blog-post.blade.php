@@ -21,7 +21,7 @@
     <hr>
 
     <!-- Preview Image -->
-    <img class="img-fluid rounded" src="{{$post->post_image}}" alt="{{$post->title}}">
+    <img class="img-fluid rounded" src="{{$post->media->filename}}" alt="{{$post->title}}">
 
     <hr>
 
@@ -36,12 +36,16 @@
     <div class="card my-4">
         <h5 class="card-header">Leave a Comment:</h5>
         <div class="card-body">
-            <form>
+            <form action="{{route('comment.store')}}" method="POST">
+                @csrf
                 @if(auth()->user())
                 <div class="form-group">
-                    <textarea class="form-control" rows="3"></textarea>
+                    <textarea class="form-control" name="body" rows="3"></textarea>
                 </div>
-                <button type="submit" class="btn btn-primary">Submit</button>
+                <input type="hidden" name="author" value="{{auth()->user()->name}}">
+                <input type="hidden" name="user_id" value="{{auth()->user()->id}}">
+                <input type="hidden" name="posts_id" value="{{$post->id}}">
+                <button type="submit" class="btn btn-primary mt-3">Submit</button>
                 @else
 
                 <a class="btn btn-primary" href="/login">Login</a>

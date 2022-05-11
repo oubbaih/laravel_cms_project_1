@@ -4,6 +4,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AdminPostsController;
 use App\Http\Controllers\AdminProfileController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\CommentController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\MediaController;
 use App\Http\Controllers\PermissionController;
@@ -36,6 +37,7 @@ Route::middleware('auth')->group(function () {
   Route::get('/admin', AdminController::class . '@index')->name('admin');
   Route::resource('/admin/posts', AdminPostsController::class);
   Route::resource('/admin/profile', AdminProfileController::class);
+  Route::resource('/comment', CommentController::class);
 });
 
 Route::middleware('role:admin', 'auth')->group(function () {
