@@ -1,4 +1,4 @@
-<x-admin-master :setting=$setting>
+<x-admin-master >
   @section('content')
   @if(auth()->user()->userHasRole('admin'))
   <h1 class="h3 mb-4 text-grey-800">Dashbord</h1>
@@ -54,5 +54,13 @@ const myChart = new Chart(ctx, {
   
   
   @endsection
-
+@section('copyright')
+     <div class="copyright text-center my-auto">
+          @if(isset($setting))
+          @foreach ($setting as $set)
+          <span>{{$set->footer_copy_right}}</span>
+          @endforeach
+          @endif
+        </div>
+@endsection
 </x-admin-master>

@@ -61,7 +61,7 @@
 
 
   {{-- JS Links Of SummernoteJs  --}}
-  @yield('jsSummernote');
+  @yield('jsSummernote')
 </body>
 
 </html>

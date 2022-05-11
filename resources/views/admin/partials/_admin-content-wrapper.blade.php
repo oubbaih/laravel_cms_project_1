@@ -177,12 +177,7 @@
     <!-- Footer -->
     <footer class="sticky-footer bg-white">
       <div class="container my-auto">
-        <div class="copyright text-center my-auto">
-          @foreach ($setting as $set)
-              
-          @endforeach
-          <span>{{$set->footer_copy_right}}</span>
-        </div>
+       @yield('copyright')
       </div>
     </footer>
     <!-- End of Footer -->

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Media;
 use App\Models\Posts;
+use App\Models\setting;
 use Illuminate\Http\Request;
 
 class MediaController extends Controller
@@ -18,7 +19,8 @@ class MediaController extends Controller
     {
         //
         $images = Media::paginate(10);
-        return view('admin.media.index', compact('images'));
+        $setting = setting::all();
+        return view('admin.media.index', compact('images', 'setting'));
     }
 
     /**

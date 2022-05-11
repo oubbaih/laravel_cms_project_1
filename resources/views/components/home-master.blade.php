@@ -80,9 +80,7 @@
   <!-- Footer-->
   <footer class="py-5 bg-dark">
     <div class="container">
-          @foreach ($settings as $setting)
-          <p class="m-0 text-center text-white">{{$setting->footer_copy_right}}</p>
-        @endforeach
+   @yield('copyright')
     </div>
   </footer>
   <!-- Bootstrap core JS-->
