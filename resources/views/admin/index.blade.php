@@ -3,17 +3,6 @@
   @if(auth()->user()->userHasRole('admin'))
   <h1 class="h3 mb-4 text-grey-800">Dashbord</h1>
   <canvas id="myChart" width="400" height="400"></canvas>
-
-
-
-
-
-
-
-
-
-
-
   @endif
   @endsection
 
