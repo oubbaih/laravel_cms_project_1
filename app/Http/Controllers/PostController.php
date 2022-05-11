@@ -18,8 +18,9 @@ class PostController extends Controller
     {
         //
 
-        $post  =  Posts::with('media')->findOrFail($id);
+        $post  =  Posts::with(['media', 'comments'])->findOrFail($id);
         $categories = Category::all();
+
         return view('blog-post', ['post' => $post, 'categories' => $categories]);
     }
 }
