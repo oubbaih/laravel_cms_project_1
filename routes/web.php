@@ -10,6 +10,7 @@ use App\Http\Controllers\MediaController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\RoleController;
+use App\Http\Controllers\SettingController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\UserRolesAttach;
 use Illuminate\Support\Facades\Auth;
@@ -56,4 +57,7 @@ Route::middleware('role:admin', 'auth')->group(function () {
   // Add MediaCheckbox Route 
   Route::post('/admin/checkbox', MediaController::class . '@mediaCheckbox')->name('admin.checkbox');
   Route::resource('/admin/media', MediaController::class);
+
+  //Admin Settings 
+  Route::resource('admin/setting', SettingController::class);
 });
