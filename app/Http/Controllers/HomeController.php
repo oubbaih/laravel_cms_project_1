@@ -16,9 +16,8 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $posts = Posts::paginate(4);
+        $posts = Posts::with('media')->paginate(4);
         $categories = Category::all();
-        // dd($categories[0]->name);
         return view('home', compact('posts', 'categories'));
     }
 }

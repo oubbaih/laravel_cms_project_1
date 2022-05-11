@@ -28,7 +28,7 @@ class Posts extends Model
     {
         return $this->belongsTo(Category::class);
     }
-    public function image()
+    public function media()
     {
         return $this->belongsTo(Media::class);
     }

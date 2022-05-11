@@ -87,6 +87,8 @@ class AdminPostsController extends Controller
             list(, $data)      = explode(',', $data);
             $imgeData = base64_decode($data);
             $image_name = "/storage/images/" . time() . $item . '.png';
+            Media::create(['filename' => $image_name]);
+
             $path = public_path() . $image_name;
             file_put_contents($path, $imgeData);
 
@@ -180,6 +182,7 @@ class AdminPostsController extends Controller
             // list(, $data)      = explode(',', $data);
             $imgeData = base64_decode($data);
             $image_name = "/storage/images/" . time() . $item . '.png';
+            Media::create(['filename' => $image_name]);
             $path = public_path() . $image_name;
             file_put_contents($path, $imgeData);
 

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Media;
 use App\Models\Permission;
 use App\Models\Role;
 use App\Models\User;
@@ -87,6 +88,7 @@ class AdminProfileController extends Controller
             $fileName = $request['avatar']->getClientOriginalName();
             $path = $request->file('avatar')->storeAs('images', $fileName, 'public');
             $input['avatar'] = '/storage/' . $path;
+            Media::create(['filename' => '/storage/' . $path]);
             $user->avatar = $input['avatar'];
         }
         $user->update($input);
