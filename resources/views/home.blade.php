@@ -1,4 +1,4 @@
-<x-home-master :categories=$categories>
+<x-home-master :categories=$categories :settings=$setting>
   @section('content')
 
   <!-- Nested row for non-featured blog posts-->

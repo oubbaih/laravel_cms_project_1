@@ -178,7 +178,10 @@
     <footer class="sticky-footer bg-white">
       <div class="container my-auto">
         <div class="copyright text-center my-auto">
-          <span>Copyright &copy; Your Website 2019</span>
+          @foreach ($setting as $set)
+              
+          @endforeach
+          <span>{{$set->footer_copy_right}}</span>
         </div>
       </div>
     </footer>

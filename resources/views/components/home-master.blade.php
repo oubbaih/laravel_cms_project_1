@@ -18,11 +18,14 @@
   <!-- Responsive navbar-->
   @include('partials._blog-navbar')
   <!-- Page header with logo and tagline-->
+  
   <header class="py-5 bg-light border-bottom mb-4">
     <div class="container">
       <div class="text-center my-5">
-        <h1 class="fw-bolder">Welcome to Blog Home!</h1>
-        <p class="lead mb-0">A Bootstrap 5 starter layout for your next blog homepage</p>
+        @foreach ($settings as $setting)
+        <h1 class="fw-bolder">{{$setting->title}}</h1>
+        <p class="lead mb-0">{{$setting->subtitle}}</p>
+        @endforeach
       </div>
     </div>
   </header>
@@ -77,7 +80,9 @@
   <!-- Footer-->
   <footer class="py-5 bg-dark">
     <div class="container">
-      <p class="m-0 text-center text-white">Copyright &copy; Your Website 2022</p>
+          @foreach ($settings as $setting)
+          <p class="m-0 text-center text-white">{{$setting->footer_copy_right}}</p>
+        @endforeach
     </div>
   </footer>
   <!-- Bootstrap core JS-->
