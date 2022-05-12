@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\AboutPage;
+use App\Models\About;
+use App\Models\Media;
 use Illuminate\Http\Request;
 
-class AboutPageController extends Controller
+class AboutController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -25,6 +26,7 @@ class AboutPageController extends Controller
     public function create()
     {
         //
+        return view('admin.about.create');
     }
 
     /**
@@ -36,15 +38,32 @@ class AboutPageController extends Controller
     public function store(Request $request)
     {
         //
+        //
+        $request->validate([
+            'image' => 'required',
+            'content' => 'required',
+        ]);
+        $input = [];
+        if ($request->image) {
+            $fileName = $request->file('image')->getClientOriginalName();
+            $path = $request->file('image')->storeAs('images', $fileName, 'public');
+            $res = Media::create(['filename' => '/storage/' . $path]);
+            if ($res) {
+                $input['media_id'] = $res->id;
+            }
+        }
+        $input['content'] = $request->content;
+        About::create($input);
+        return redirect(route('page.about'));
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\AboutPage  $aboutPage
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(AboutPage $aboutPage)
+    public function show($id)
     {
         //
     }
@@ -52,10 +71,10 @@ class AboutPageController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\AboutPage  $aboutPage
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(AboutPage $aboutPage)
+    public function edit($id)
     {
         //
     }
@@ -64,10 +83,10 @@ class AboutPageController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\AboutPage  $aboutPage
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, AboutPage $aboutPage)
+    public function update(Request $request, $id)
     {
         //
     }
@@ -75,10 +94,10 @@ class AboutPageController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\AboutPage  $aboutPage
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(AboutPage $aboutPage)
+    public function destroy($id)
     {
         //
     }

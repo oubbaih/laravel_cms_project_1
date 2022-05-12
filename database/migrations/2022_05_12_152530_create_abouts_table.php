@@ -13,8 +13,10 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('about_pages', function (Blueprint $table) {
+        Schema::create('abouts', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('media_id');
+            $table->string('content');
             $table->timestamps();
         });
     }
@@ -26,6 +28,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('about_pages');
+        Schema::dropIfExists('abouts');
     }
 };

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AboutController;
 use App\Http\Controllers\AboutPageController;
 use App\Http\Controllers\AboutPageHomeView;
 use App\Http\Controllers\AdminContactForm;
@@ -71,5 +72,5 @@ Route::middleware('role:admin', 'auth')->group(function () {
   Route::delete('/admin/contact/{id}', AdminContactForm::class . '@destroy')->name('admin.contact.destroy');
 
   // About Us Routes For Admin
-  Route::resource('/admin/about', AboutPageController::class);
+  Route::resource('/admin/about', AboutController::class);
 });
