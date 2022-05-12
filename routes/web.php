@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AdminContactForm;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AdminPostsController;
 use App\Http\Controllers\AdminProfileController;
@@ -61,4 +62,7 @@ Route::middleware('role:admin', 'auth')->group(function () {
 
   //Admin Settings 
   Route::resource('admin/setting', SettingController::class);
+  //Show Contact Form Messages
+  Route::get('/admin/contact', AdminContactForm::class . '@index')->name('admin.contact');
+  Route::delete('/admin/contact/{id}', AdminContactForm::class . '@destroy')->name('admin.contact.destroy');
 });
