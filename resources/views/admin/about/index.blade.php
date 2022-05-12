@@ -22,21 +22,13 @@
                     <th>Edit</th>
                   </tr>
                 </thead>
-                <tfoot>
-                  <tr>
-                    <th>Id</th>
-                    <th>Media Id</th>
-                    <th>Content</th>
-                    <th>Edit</th>
-                  </tr>
-                </tfoot>
                 <tbody>
                   @if(count($aboutInfo)>0)
                   @foreach($aboutInfo as $data)
                   <tr>
                     <td>{{$data->id}}</td>
-                    <td>{{$data->content}}</td>
                     <td>{{$data->media_id}}</td>
+                    <td>{{$data->content}}</td>
                     <td><a href="{{route('about.edit',$data)}}" class="btn btn-primary">Edit</a></td>
                   </tr>
                   @endforeach
