@@ -105,7 +105,7 @@ class MediaController extends Controller
         } else {
             $filename =  $request->get('filename');
             Media::where('filename', $filename)->delete();
-            $path =  'storage/images/' . $filename;
+            $path = storage_path(public_path() . 'storage/images/' . $filename);
             if (file_exists($path)) {
                 unlink($path);
             }
