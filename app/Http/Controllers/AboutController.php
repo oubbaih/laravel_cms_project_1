@@ -16,6 +16,8 @@ class AboutController extends Controller
     public function index()
     {
         //
+        $aboutInfo = About::with('media')->get();
+        return view('admin.about.index', compact('aboutInfo'));
     }
 
     /**
@@ -74,9 +76,10 @@ class AboutController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(About $about)
     {
         //
+        return view('admin.about.edit', compact('about'));
     }
 
     /**
@@ -86,9 +89,25 @@ class AboutController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, About $about)
     {
+        // dd($request);
         //
+        // $request->validate([
+        //     'image' => 'required',
+        //     'content' => 'required',
+        // ]);
+        if ($request->image) {
+            $fileName = $request->file('image')->getClientOriginalName();
+            $path = $request->file('image')->storeAs('images', $fileName, 'public');
+            $res = Media::create(['filename' => '/storage/' . $path]);
+            if ($res) {
+                $about->media_id = $res->id;
+            }
+        }
+        $about->content = $request->content;
+        $about->save();
+        return redirect(route('page.about'));
     }
 
     /**

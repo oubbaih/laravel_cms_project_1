@@ -1,4 +1,4 @@
-<x-home-master>
+<x-home-master  :categories=$categories>
 
   @section('content')
     @if(session('recieved-message'))

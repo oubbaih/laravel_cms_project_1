@@ -1,4 +1,4 @@
-<x-home-master>
+<x-home-master  :categories=$categories>
 @section('setting')
  <div class="text-center my-5">
         @foreach ($settings as $setting)

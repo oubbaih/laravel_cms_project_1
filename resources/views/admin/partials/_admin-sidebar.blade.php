@@ -145,6 +145,7 @@
         <div class="bg-white py-2 collapse-inner rounded">
           <h6 class="collapse-header">Pages</h6>
           <a class="collapse-item" href="{{route('about.create')}}">About</a>
+          <a class="collapse-item" href="{{route('about.index')}}">View All Pages</a>
         </div>
       </div>
     </li>
