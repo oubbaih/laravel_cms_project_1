@@ -5,6 +5,7 @@ use App\Http\Controllers\AdminPostsController;
 use App\Http\Controllers\AdminProfileController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CommentController;
+use App\Http\Controllers\ContactController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\MediaController;
 use App\Http\Controllers\PermissionController;
@@ -34,7 +35,7 @@ Auth::routes();
 Route::get('/search', HomeController::class . '@search')->name('search');
 Route::get('/', HomeController::class . '@index')->name('home');
 Route::get('/post/{id}', PostController::class . '@show')->name('post');
-
+Route::resource('/page/contact', ContactController::class);
 Route::middleware('auth')->group(function () {
   Route::get('/admin', AdminController::class . '@index')->name('admin');
   Route::resource('/admin/posts', AdminPostsController::class);

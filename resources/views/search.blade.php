@@ -5,7 +5,7 @@
   <div class="row">
     <h1 class="text-capitalize h1">search posts</h1>
     <!-- Blog post-->
-    @if(isset($posts))
+  @if(isset($posts))
     @foreach($posts as $post)
     <div class="col-6">
       <div class="card mb-4">
