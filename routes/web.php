@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\AboutPageController;
+use App\Http\Controllers\AboutPageHomeView;
 use App\Http\Controllers\AdminContactForm;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AdminPostsController;
@@ -37,6 +39,8 @@ Route::get('/search', HomeController::class . '@search')->name('search');
 Route::get('/', HomeController::class . '@index')->name('home');
 Route::get('/post/{id}', PostController::class . '@show')->name('post');
 Route::resource('/page/contact', ContactController::class);
+Route::get('page/about', AboutPageHomeView::class . '@index')->name('page.about');
+
 Route::middleware('auth')->group(function () {
   Route::get('/admin', AdminController::class . '@index')->name('admin');
   Route::resource('/admin/posts', AdminPostsController::class);
@@ -65,4 +69,7 @@ Route::middleware('role:admin', 'auth')->group(function () {
   //Show Contact Form Messages
   Route::get('/admin/contact', AdminContactForm::class . '@index')->name('admin.contact');
   Route::delete('/admin/contact/{id}', AdminContactForm::class . '@destroy')->name('admin.contact.destroy');
+
+  // About Us Routes For Admin
+  Route::resource('/admin/about', AboutPageController::class);
 });
