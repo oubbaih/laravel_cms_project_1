@@ -1,4 +1,9 @@
-<x-home-master  :categories=$categories>
+<x-home-master  :categories=$categories :settings=$settings>
+  @section('logo')
+     @foreach ($settings as $setting)
+       <img src="{{asset($setting->media->filename)}}" class="img-fluid" style="width:150px;" alt="logo">
+        @endforeach
+  @endsection
 @section('setting')
  <div class="text-center my-5">
         @foreach ($settings as $setting)
