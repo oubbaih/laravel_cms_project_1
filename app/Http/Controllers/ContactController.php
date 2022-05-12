@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Contact;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
 
 class ContactController extends Controller
 {
@@ -36,7 +37,25 @@ class ContactController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        //  $table->string('first_name');
+
+        $request->validate([
+            'first_name' => 'required',
+            'last_name' => 'required',
+            'email' => 'required|email',
+            'job_title' => 'required',
+            'message' => 'required',
+        ]);
+        $input = [
+            'first_name' => $request->first_name,
+            'last_name' => $request->last_name,
+            'email' => $request->email,
+            'job_title' => $request->job_title,
+            'message' => $request->message,
+        ];
+        Contact::create($input);
+        Session::flash('recieved-message', 'Thanks For Contact Us We Will Answer You Soon As Posible');
+        return back();
     }
 
     /**

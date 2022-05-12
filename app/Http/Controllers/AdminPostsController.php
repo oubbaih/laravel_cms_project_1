@@ -8,7 +8,6 @@ use App\Models\Posts;
 use Illuminate\Http\Request;
 
 use Illuminate\Support\Facades\Session;
-use Symfony\Component\Console\Input\Input;
 
 class AdminPostsController extends Controller
 {
