@@ -3,6 +3,8 @@
 @section('content')
 <h1>About Us Page</h1>
   <div class="row">
+    @if (isset($aboutData))
+   
     @foreach ($aboutData as $dat)
         <div class="col-6">
           <article>
@@ -12,7 +14,8 @@
         <div class="col-6">
           <img class="img-fluid" src="{{asset($dat->media->filename)}}" alt="aabout page Image">
         </div>
-    @endforeach
+    @endforeach     
+    @endif
   </div>
 @endsection
 

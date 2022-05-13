@@ -1,11 +1,14 @@
 <x-home-master :categories=$categories>
 @section('setting')
- <div class="text-center my-5">
+@if (isset($setting))
+     <div class="text-center my-5">
         @foreach ($settings as $setting)
         <h1 class="fw-bolder">{{$setting->title}}</h1>
         <p class="lead mb-0">{{$setting->subtitle}}</p>
         @endforeach
       </div>
+@endif
+
 @endsection
     @section('content')
 
@@ -64,7 +67,8 @@
     </div>
 
     <!-- Single Comment -->
-
+    @if ($post)
+  
     @foreach ($post->comments as $comment)
            <div class="media mb-4">
         <img class="d-flex mr-3 rounded-circle" src="http://placehold.it/50x50" alt="">
@@ -74,15 +78,18 @@
         </div>
     </div>
     @endforeach
- 
+    @endif
 
 
 
     @endsection
 @section('copyright')
-     @foreach ($settings as $setting)
+@if (isset($settings))
+         @foreach ($settings as $setting)
                   <p class="m-0 text-center text-white">{{$setting->footer_copy_right}}</p>
         @endforeach
+@endif
+
 @endsection
 
 </x-home-master>
