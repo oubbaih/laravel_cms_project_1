@@ -1,15 +1,19 @@
 <x-home-master  :categories=$categories :settings=$settings>
   @section('logo')
-     @foreach ($settings as $setting)
+  @if (isset($settings ))
+        @foreach ($settings as $setting)
        <img src="{{asset($setting->media->filename)}}" class="img-fluid" style="width:150px;" alt="logo">
-        @endforeach
+        @endforeach  
+  @endif
   @endsection
 @section('setting')
  <div class="text-center my-5">
+     @if (isset($settings ))
         @foreach ($settings as $setting)
         <h1 class="fw-bolder">{{$setting->title}}</h1>
         <p class="lead mb-0">{{$setting->subtitle}}</p>
         @endforeach
+        @endif 
       </div>
 @endsection
 
@@ -47,9 +51,11 @@
 
   @endsection
 @section('copyright')
+     @if (isset($settings ))
      @foreach($settings as $setting)
              <p class="m-0 text-center text-white">{{$setting->footer_copy_right}}</p>
         @endforeach
+         @endif
 @endsection
 
 </x-home-master>
