@@ -1,6 +1,6 @@
 <x-home-master  :categories=$categories :settings=$settings>
   @section('logo')
-  @if (isset($settings ))
+  @if ($settings))
         @foreach ($settings as $setting)
        <img src="{{asset($setting->media->filename)}}" class="img-fluid" style="width:150px;" alt="logo">
         @endforeach  

@@ -93,10 +93,14 @@ class UserController extends Controller
             'role_id' => 'required',
         ]);
 
-        if ($request['avatar']) {
-            $fileName = $request['avatar']->getClientOriginalName();
-            $path = $request->file('avatar')->storeAs('images', $fileName, 'public');
-            $input['avatar'] = '/storage/' . $path;
+        if ($request->hasFile('avatar')) {
+            $fileExtension = $request->file('image')->getClientOriginalExtension();
+            $fileName = pathinfo($fileExtension, PATHINFO_FILENAME);
+            $extension  = $request->file('image')->getClientOriginalExtension();
+            $fileNameStore = $fileName . '_' . time() . '_' . $extension;
+            $path = $request->file('image')->move('images/', $fileNameStore);
+
+            $input['avatar'] = $path;
             $user->avatar = $input['avatar'];
         }
         $user->roles()->attach($input['role_id']);

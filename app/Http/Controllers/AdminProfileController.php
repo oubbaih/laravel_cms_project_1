@@ -84,11 +84,15 @@ class AdminProfileController extends Controller
             'email' => 'required'
         ]);
 
-        if ($request['avatar']) {
-            $fileName = $request['avatar']->getClientOriginalName();
-            $path = $request->file('avatar')->storeAs('images', $fileName, 'public');
-            $input['avatar'] = '/storage/' . $path;
-            Media::create(['filename' => '/storage/' . $path]);
+        if ($request->hasFile('avatar')) {
+            $fileExtension = $request->file('avatar')->getClientOriginalExtension();
+            $fileName = pathinfo($fileExtension, PATHINFO_FILENAME);
+            $extension  = $request->file('avatar')->getClientOriginalExtension();
+            $fileNameStore = $fileName . '_' . time() . '_' . $extension;
+            $path = $request->file('avatar')->move('images/', $fileNameStore);
+
+            $input['avatar'] =  $path;
+            Media::create(['filename' =>  $path]);
             $user->avatar = $input['avatar'];
         }
         $user->update($input);

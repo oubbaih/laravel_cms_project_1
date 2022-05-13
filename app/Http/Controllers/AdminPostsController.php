@@ -61,10 +61,14 @@ class AdminPostsController extends Controller
 
 
         $input = [];
-        if ($request->post_image) {
-            $fileName = $request->file('post_image')->getClientOriginalName();
-            $path = $request->file('post_image')->storeAs('images', $fileName, 'public');
-            $res = Media::create(['filename' => '/storage/' . $path]);
+        if ($request->hasFile('post_image')) {
+            $fileExtension = $request->file('post_image')->getClientOriginalExtension();
+            $fileName = pathinfo($fileExtension, PATHINFO_FILENAME);
+            $extension  = $request->file('post_image')->getClientOriginalExtension();
+            $fileNameStore = $fileName . '_' . time() . '_' . $extension;
+            $path = $request->file('post_image')->move('images/', $fileNameStore);
+
+            $res = Media::create(['filename' =>  $path]);
             if ($res) {
                 $input['media_id'] = $res->id;
             }
@@ -85,7 +89,7 @@ class AdminPostsController extends Controller
             list($type, $data) = explode(';', $data);
             list(, $data)      = explode(',', $data);
             $imgeData = base64_decode($data);
-            $image_name = "/storage/images/" . time() . $item . '.png';
+            $image_name = "images/" . time() . $item . '.png';
             Media::create(['filename' => $image_name]);
 
             $path = public_path() . $image_name;
@@ -132,7 +136,6 @@ class AdminPostsController extends Controller
         $categories = Category::all();
         $post = Posts::find($id);
         $image = Media::findOrFail($post->id);
-        // dd($image);
         return view('admin.posts.edit', ['post' => $post, 'categories' => $categories, 'image' => $image]);
     }
 
@@ -155,10 +158,14 @@ class AdminPostsController extends Controller
 
 
 
-        if ($request->post_image) {
-            $fileName = $request->file('post_image')->getClientOriginalName();
-            $path = $request->file('post_image')->storeAs('images', $fileName, 'public');
-            $res = Media::create(['filename' => '/storage/' . $path]);
+        if ($request->hasFile('post_image')) {
+            $fileExtension = $request->file('post_image')->getClientOriginalExtension();
+            $fileName = pathinfo($fileExtension, PATHINFO_FILENAME);
+            $extension  = $request->file('post_image')->getClientOriginalExtension();
+            $fileNameStore = $fileName . '_' . time() . '_' . $extension;
+            $path = $request->file('post_image')->move('images/', $fileNameStore);
+
+            $res = Media::create(['filename' => $path]);
             if ($res) {
                 $post->media_id = $res->id;
             }
@@ -180,7 +187,7 @@ class AdminPostsController extends Controller
             // list($type, $data) = explode(';', $data);
             // list(, $data)      = explode(',', $data);
             $imgeData = base64_decode($data);
-            $image_name = "/storage/images/" . time() . $item . '.png';
+            $image_name = "images/" . time() . $item . '.png';
             Media::create(['filename' => $image_name]);
             $path = public_path() . $image_name;
             file_put_contents($path, $imgeData);

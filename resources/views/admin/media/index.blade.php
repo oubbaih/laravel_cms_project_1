@@ -20,7 +20,7 @@
                     </tr>
                   </thead>
                   <tbody>
-                    @if(isset($images))
+                    @if($images)
                     @foreach($images as $image)
                     <tr>
                       <td>{{$image->id}}</td>

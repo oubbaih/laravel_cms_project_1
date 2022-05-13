@@ -48,10 +48,14 @@ class SettingController extends Controller
             'logo' => 'file',
             'footer_copy_right' => 'required',
         ]);
-        if ($request->logo) {
-            $fileName = $request->file('logo')->getClientOriginalName();
-            $path = $request->file('logo')->storeAs('images', $fileName, 'public');
-            $res = Media::create(['filename' => '/storage/' . $path]);
+        if ($request->hasFile('logo')) {
+            $fileExtension = $request->file('logo')->getClientOriginalExtension();
+            $fileName = pathinfo($fileExtension, PATHINFO_FILENAME);
+            $extension  = $request->file('logo')->getClientOriginalExtension();
+            $fileNameStore = $fileName . '_' . time() . '_' . $extension;
+            $path = $request->file('logo')->move('images/', $fileNameStore);
+
+            $res = Media::create(['filename' =>  $path]);
             if ($res) {
                 $setting->media_id = $res->id;
             }
@@ -107,10 +111,14 @@ class SettingController extends Controller
             'logo' => 'file',
             'footer_copy_right' => 'required',
         ]);
-        if ($request->logo) {
-            $fileName = $request->file('logo')->getClientOriginalName();
-            $path = $request->file('logo')->storeAs('images', $fileName, 'public');
-            $res = Media::create(['filename' => '/storage/' . $path]);
+        if ($request->hasFile('logo')) {
+            $fileExtension = $request->file('logo')->getClientOriginalExtension();
+            $fileName = pathinfo($fileExtension, PATHINFO_FILENAME);
+            $extension  = $request->file('logo')->getClientOriginalExtension();
+            $fileNameStore = $fileName . '_' . time() . '_' . $extension;
+            $path = $request->file('logo')->move('images/', $fileNameStore);
+
+            $res = Media::create(['filename' =>  $path]);
             if ($res) {
                 $setting->media_id = $res->id;
             }

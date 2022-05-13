@@ -67,7 +67,8 @@
     </div>
 
     <!-- Single Comment -->
-
+    @if ($post)
+  
     @foreach ($post->comments as $comment)
            <div class="media mb-4">
         <img class="d-flex mr-3 rounded-circle" src="http://placehold.it/50x50" alt="">
@@ -77,13 +78,13 @@
         </div>
     </div>
     @endforeach
- 
+    @endif
 
 
 
     @endsection
 @section('copyright')
-@if (isset(setting))
+@if (isset($settings))
          @foreach ($settings as $setting)
                   <p class="m-0 text-center text-white">{{$setting->footer_copy_right}}</p>
         @endforeach

@@ -46,10 +46,15 @@ class AboutController extends Controller
             'content' => 'required',
         ]);
         $input = [];
-        if ($request->image) {
-            $fileName = $request->file('image')->getClientOriginalName();
-            $path = $request->file('image')->storeAs('images', $fileName, 'public');
-            $res = Media::create(['filename' => '/storage/' . $path]);
+        if ($request->hasFile('image')) {
+            $fileExtension = $request->file('image')->getClientOriginalExtension();
+            $fileName = pathinfo($fileExtension, PATHINFO_FILENAME);
+            $extension  = $request->file('image')->getClientOriginalExtension();
+            $fileNameStore = $fileName . '_' . time() . '_' . $extension;
+            $path = $request->file('image')->move('images/', $fileNameStore);
+
+            // $path = $request->file('image')->storeAs('images', $fileName, 'public');
+            $res = Media::create(['filename' =>  $path]);
             if ($res) {
                 $input['media_id'] = $res->id;
             }
@@ -97,10 +102,16 @@ class AboutController extends Controller
         //     'image' => 'required',
         //     'content' => 'required',
         // ]);
-        if ($request->image) {
-            $fileName = $request->file('image')->getClientOriginalName();
-            $path = $request->file('image')->storeAs('images', $fileName, 'public');
-            $res = Media::create(['filename' => '/storage/' . $path]);
+        if ($request->hasFile('image')) {
+            $fileExtension = $request->file('image')->getClientOriginalExtension();
+            $fileName = pathinfo($fileExtension, PATHINFO_FILENAME);
+            $extension  = $request->file('image')->getClientOriginalExtension();
+            $fileNameStore = $fileName . '_' . time() . '_' . $extension;
+            $path = $request->file('image')->move('images/', $fileNameStore);
+
+            // this code you need third party services like aws3 as cloud service for your app
+            //$path = $request->file('image')->storeAs('images', $fileName, 'public');
+            $res = Media::create(['filename' => $path]);
             if ($res) {
                 $about->media_id = $res->id;
             }
